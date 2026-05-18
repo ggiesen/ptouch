@@ -279,7 +279,7 @@ usage: ptouch [-h] [--image FILE] (--host IP | --usb)
               --printer {E550W,P710BT,P750W,P900,P900W,P910BT,P950NW}
               --tape-width {3.5,6,9,12,18,24,36} [--font PATH] [--font-size PX]
               [--align H V] [--high-resolution] [--margin MM] [--no-compression]
-              [--full-cut] [--copies N] [--width MM] [text ...]
+              [--full-cut] [--precut] [--copies N] [--width MM] [text ...]
 
 positional arguments:
   text                  Text to print. Multiple strings create multiple labels
@@ -298,6 +298,9 @@ options:
   --margin, -m MM       Margin in mm (default: 2mm)
   --no-compression      Disable TIFF compression
   --full-cut            Use full cuts between labels instead of half-cuts
+  --precut              Eject the ~24mm leader between the print head and
+                        cutter as a scrap before the first label, so the
+                        label starts at a fresh cut edge with no blank tape
   --copies, -c N        Number of copies to print (default: 1)
   --width, -w MM        Fixed label width in mm (default: auto-sized to content)
 ```

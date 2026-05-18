@@ -574,6 +574,39 @@ class LabelPrinter(ABC):
 
         return raster_data
 
+    def precut(self, tape: Tape) -> None:
+        """Trigger a feed-and-cut without printing any content.
+
+        Sends the standard page-control sequence with zero raster lines and
+        auto-cut enabled, then 0x1A (print and feed). The printer feeds the
+        ~24 mm of tape currently between the print head and the cutter and
+        cuts, ejecting it as a small leader scrap. The next print then
+        starts from a fresh cut edge, with no blank leader on the real
+        label.
+
+        This is what Brother's official driver does at the start of a print
+        operation to give clean leader-free output.
+
+        Parameters
+        ----------
+        tape : Tape
+            Tape currently loaded — used only to populate the page-info
+            command with the correct media type and width.
+        """
+        control_seq = self._build_page_control_sequence(
+            num_lines=0,
+            margin=self._mm_to_dots(self.DEFAULT_MARGIN_MM),
+            tape=tape,
+            high_resolution=False,
+            is_first_page=True,
+            auto_cut=True,
+            half_cut=False,
+            chain_printing=False,
+        )
+        self.connection.write(control_seq)
+        self.connection.write(b"\x1a")  # print and feed → triggers the cut
+        logger.info("Precut: leader ejected.")
+
     def print(
         self,
         label: Label,
@@ -669,6 +702,7 @@ class LabelPrinter(ABC):
         margin_mm: float | None = None,
         high_resolution: bool | None = None,
         half_cut: bool = True,
+        precut: bool = False,
     ) -> None:
         """Print multiple labels with cuts between and after last.
 
@@ -707,6 +741,9 @@ class LabelPrinter(ABC):
 
         cut_type = "half-cut" if half_cut else "full-cut"
         logger.info(f"Printing {len(labels)} labels with {cut_type} between")
+
+        if precut:
+            self.precut(labels[0].tape)
 
         for idx, label in enumerate(labels):
             is_last = idx == len(labels) - 1

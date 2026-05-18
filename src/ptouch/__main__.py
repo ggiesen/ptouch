@@ -248,6 +248,15 @@ Examples:
         help="Use full cuts between labels instead of half-cuts (default: half-cut)",
     )
     parser.add_argument(
+        "--precut",
+        action="store_true",
+        help=(
+            "Eject the ~24 mm leader between the print head and the cutter "
+            "as a small scrap before the first label, so the real label "
+            "starts at a fresh cut edge with no blank leading tape."
+        ),
+    )
+    parser.add_argument(
         "--copies",
         "-c",
         type=int,
@@ -473,6 +482,8 @@ def main() -> int:
         print(f"Using {cut_type} between labels, full cut after last label.")
 
     try:
+        if args.precut:
+            printer.precut(labels[0].tape)
         if num_labels == 1:
             printer.print(labels[0], margin_mm=args.margin, high_resolution=args.high_resolution)
         else:
