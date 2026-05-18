@@ -6,7 +6,7 @@
 
 from ptouch.connection import USB_VENDOR_ID
 from ptouch.printer import TapeConfig
-from ptouch.printers import PTE550W, PTP750W, PTP900, PTP900W, PTP910BT, PTP950NW
+from ptouch.printers import PTE550W, PTP710BT, PTP750W, PTP900, PTP900W, PTP910BT, PTP950NW
 
 
 class TestTapeConfig:
@@ -65,6 +65,10 @@ class TestUSBConstants:
         """Test PT-P750W product ID."""
         assert PTP750W.USB_PRODUCT_ID == 0x2065
 
+    def test_usb_product_id_p710bt(self) -> None:
+        """Test PT-P710BT product ID."""
+        assert PTP710BT.USB_PRODUCT_ID == 0x20AF
+
     def test_usb_product_id_p900(self) -> None:
         """Test PT-P900 product ID."""
         assert PTP900.USB_PRODUCT_ID == 0x2083
@@ -86,6 +90,7 @@ class TestUSBConstants:
         ids = [
             USB_VENDOR_ID,
             PTE550W.USB_PRODUCT_ID,
+            PTP710BT.USB_PRODUCT_ID,
             PTP750W.USB_PRODUCT_ID,
             PTP900.USB_PRODUCT_ID,
             PTP900W.USB_PRODUCT_ID,

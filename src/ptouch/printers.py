@@ -76,6 +76,29 @@ class PTP750W(PTE550W):
     USB_PRODUCT_ID = 0x2065
 
 
+class PTP710BT(PTE550W):
+    """Brother PT-P710BT label printer (128 pins, 180 DPI, Bluetooth/USB).
+
+    Same raster protocol as PT-E550W / PT-P750W (covered by the same
+    Brother spec document: cv_pte550wp750wp710bt_eng_raster_102.pdf).
+
+    Note: PT-P710BT supports only laminated TZe tapes — no heat shrink
+    tubes (HSe series) and no 36 mm tape (the 128-pin head caps at 24 mm).
+    """
+
+    USB_PRODUCT_ID = 0x20AF
+
+    # PT-P710BT only supports laminated TZe tapes (3.5 / 6 / 9 / 12 / 18 / 24 mm).
+    PIN_CONFIGS = {
+        Tape3_5mm: TapeConfig(left_pins=52, print_pins=24, right_pins=52),
+        Tape6mm: TapeConfig(left_pins=48, print_pins=32, right_pins=48),
+        Tape9mm: TapeConfig(left_pins=39, print_pins=50, right_pins=39),
+        Tape12mm: TapeConfig(left_pins=29, print_pins=70, right_pins=29),
+        Tape18mm: TapeConfig(left_pins=8, print_pins=112, right_pins=8),
+        Tape24mm: TapeConfig(left_pins=0, print_pins=128, right_pins=0),
+    }
+
+
 class PTP900Series(LabelPrinter):
     """Base class for Brother PT-P900 series printers (560 pins, 360 DPI).
 

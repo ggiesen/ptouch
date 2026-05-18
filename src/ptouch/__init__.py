@@ -11,6 +11,7 @@ compression, and printer-specific command sequences.
 Supported printers:
     - PT-E550W (128 pins, 180 DPI)
     - PT-P750W (128 pins, 180 DPI)
+    - PT-P710BT (128 pins, 180 DPI)
     - PT-P900 (560 pins, 360 DPI)
     - PT-P900W (560 pins, 360 DPI)
     - PT-P910BT (560 pins, 360 DPI)
@@ -38,7 +39,7 @@ from .connection import (
 )
 from .label import Align, Label, TextLabel
 from .printer import LabelPrinter, MediaType, TapeConfig
-from .printers import PTE550W, PTP750W, PTP900, PTP900W, PTP910BT, PTP950NW
+from .printers import PTE550W, PTP710BT, PTP750W, PTP900, PTP900W, PTP910BT, PTP950NW
 from .tape import (
     # Heat shrink tubes (HSe series)
     HeatShrinkTube,
@@ -95,6 +96,7 @@ __all__ = [
     # Printers
     "LabelPrinter",
     "PTE550W",
+    "PTP710BT",
     "PTP750W",
     "PTP900",
     "PTP900W",

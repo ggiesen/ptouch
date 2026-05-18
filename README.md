@@ -8,7 +8,7 @@ A Python library for Brother P-touch label printers.
 
 ## Features
 
-- Support for Brother P-touch label printers (PT-E550W, PT-P750W, PT-P900, PT-P900W, PT-P910BT, PT-P950NW)
+- Support for Brother P-touch label printers (PT-E550W, PT-P710BT, PT-P750W, PT-P900, PT-P900W, PT-P910BT, PT-P950NW)
 - Network (TCP/IP) and USB connections
 - Text labels with customizable fonts and alignment
 - Image label printing
@@ -49,6 +49,7 @@ Comprehensive documentation is available at [ptouch.readthedocs.io](https://ptou
 | Printer | Resolution | High-Res | Pins | Max Tape Width | Class |
 |---------|------------|----------|------|----------------|-------|
 | PT-E550W | 180 DPI | 360 DPI | 128 | 24mm | `PTE550W` |
+| PT-P710BT | 180 DPI | 360 DPI | 128 | 24mm | `PTP710BT` |
 | PT-P750W | 180 DPI | 360 DPI | 128 | 24mm | `PTP750W` |
 | PT-P900 | 360 DPI | 720 DPI | 560 | 36mm | `PTP900` |
 | PT-P900W | 360 DPI | 720 DPI | 560 | 36mm | `PTP900W` |
@@ -272,7 +273,8 @@ Note: `Align` is also available as a backwards-compatible alias at package level
 ## CLI Options
 
 ```
-usage: ptouch [-h] [--image FILE] (--host IP | --usb) --printer {E550W,P750W,P900,P900W,P950NW}
+usage: ptouch [-h] [--image FILE] (--host IP | --usb)
+              --printer {E550W,P710BT,P750W,P900,P900W,P910BT,P950NW}
               --tape-width {3.5,6,9,12,18,24,36} [--font PATH] [--font-size PX]
               [--align H V] [--high-resolution] [--margin MM] [--no-compression]
               [--full-cut] [--copies N] [--width MM] [text ...]
