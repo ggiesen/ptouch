@@ -56,6 +56,8 @@ Comprehensive documentation is available at [ptouch.readthedocs.io](https://ptou
 | PT-P910BT | 360 DPI | 720 DPI | 560 | 36mm | `PTP910BT` |
 | PT-P950NW | 360 DPI | 720 DPI | 560 | 36mm | `PTP950NW` |
 
+> **Note:** The PT-P710BT is a basic consumer model and does **not** support half-cut or heat shrink tubes. Its firmware ignores the half-cut command, so use `--full-cut` for multi-label jobs to get a cut between labels.
+
 ### Tapes
 
 | Type | Widths | Class | Notes |

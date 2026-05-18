@@ -88,6 +88,12 @@ class PTP710BT(PTE550W):
 
     USB_PRODUCT_ID = 0x20AF
 
+    # PT-P710BT does not support half-cut (basic consumer model — half-cut
+    # is a feature of the higher-end PT-E / PT-P series). The firmware
+    # silently ignores the half-cut bit, so default to full cuts.
+    SUPPORTS_HALF_CUT = False
+    DEFAULT_HALF_CUT = False
+
     # PT-P710BT only supports laminated TZe tapes (3.5 / 6 / 9 / 12 / 18 / 24 mm).
     PIN_CONFIGS = {
         Tape3_5mm: TapeConfig(left_pins=52, print_pins=24, right_pins=52),
