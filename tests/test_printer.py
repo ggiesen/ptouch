@@ -822,13 +822,33 @@ class TestHighResolutionCapability:
         assert b"\x47" not in mock_connection.data  # raster graphics transfer
         assert b"\x1a" not in mock_connection.data and b"\x0c" not in mock_connection.data
 
-    def test_instance_default_on_unsupported_model_is_clamped(
+    def test_constructor_request_on_unsupported_model_raises(
+        self, mock_connection: MockConnection
+    ) -> None:
+        """An explicit constructor request raises too, not just the print() kwarg."""
+        with pytest.raises(ValueError, match="does not support high-resolution printing"):
+            PTP910BT(mock_connection, high_resolution=True)
+        # The failure happens before the connection is opened, so nothing is sent.
+        assert mock_connection.data == b""
+
+    def test_unsupported_class_default_is_clamped(
         self, mock_connection: MockConnection, sample_image: Image.Image
     ) -> None:
-        """A constructor-level high_resolution=True is forced off, not raised."""
-        printer = PTP910BT(mock_connection, high_resolution=True)
-        printer.print(Label(sample_image, Tape12mm))  # no kwarg -> default path
+        """A True DEFAULT_HIGH_RESOLUTION on an unsupported model is forced off."""
+
+        class HighResDefaultOnP910BT(PTP910BT):
+            DEFAULT_HIGH_RESOLUTION = True
+
+        printer = HighResDefaultOnP910BT(mock_connection)
+        assert printer.high_resolution is False  # resolved once, honestly
+        printer.print(Label(sample_image, Tape12mm))
         assert _find_advanced_mode_byte(mock_connection.data) & (1 << 6) == 0
+
+    def test_supported_model_keeps_constructor_request(
+        self, mock_connection: MockConnection
+    ) -> None:
+        """A constructor request on a model that supports it is preserved."""
+        assert PTP900(mock_connection, high_resolution=True).high_resolution is True
 
     def test_explicit_false_on_unsupported_model_is_allowed(
         self, mock_connection: MockConnection, sample_image: Image.Image
