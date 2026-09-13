@@ -722,12 +722,20 @@ class LabelPrinter(ABC):
         ------
         ValueError
             If the label's tape type is not supported by this printer, or if
-            a feature (``auto_cut``, ``half_cut``, ``mirror``, ``chain``,
-            ``special_tape``) is explicitly requested but the printer model
-            does not support it (see the ``SUPPORTS_*`` class attributes).
+            a feature (``high_resolution``, ``auto_cut``, ``half_cut``,
+            ``mirror``, ``chain``, ``special_tape``) is explicitly requested
+            but the printer model does not support it (see the ``SUPPORTS_*``
+            class attributes and ``RESOLUTION_DPI_HIGH``).
         """
-        # Resolve high_resolution setting
-        high_res = self.high_resolution if high_resolution is None else high_resolution
+        # Resolve high-resolution against the model's capability. Unlike the
+        # other optional features this one's default lives on the instance
+        # (set in __init__) rather than in a class DEFAULT_* attribute.
+        high_res = self._resolve_feature(
+            "high-resolution printing",
+            high_resolution,
+            default=self.high_resolution,
+            supported=self.supports_high_resolution,
+        )
 
         tape_config = self.get_tape_config(label.tape)
         label.prepare(tape_config.print_pins, self.RESOLUTION_DPI)
